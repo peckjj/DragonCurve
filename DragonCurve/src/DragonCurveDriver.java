@@ -5,8 +5,8 @@ import java.util.Random;
 public class DragonCurveDriver {
 	public static int defIterations = 15;
 	
-	public static final int WIDTH  = 1800;
-	public static final int HEIGHT = 1800;
+	public static int WIDTH;
+	public static int HEIGHT;;
 	
 	public static Random random;
 	
@@ -32,6 +32,16 @@ public class DragonCurveDriver {
 		{
 			curve = new DragonCurve(defIterations);
 		}
+		if (args.length == 3)
+                {
+			WIDTH = Integer.parseInt(args[1]);
+			HEIGHT = Integer.parseInt(args[2]);
+		}
+		else
+		{
+			WIDTH = 1800;
+			HEIGHT = 1800;
+		}
 		random = new Random();
 		sizeX = WIDTH / curve.getXRange();
 		sizeY = HEIGHT / curve.getYRange();
@@ -45,7 +55,7 @@ public class DragonCurveDriver {
 		StdDraw.setXscale(0, WIDTH);
 		StdDraw.setYscale(0, HEIGHT);
 		StdDraw.clear(StdDraw.BLACK);
-		StdDraw.setPenRadius(.005);
+		StdDraw.setPenRadius(.003);
 		StdDraw.enableDoubleBuffering();
 		Iterator<Integer> c = curve.iterator();
 		StdDraw.setPenColor(StdDraw.WHITE);
