@@ -1,20 +1,25 @@
+import java.awt.Font;
 import java.util.Iterator;
+import java.util.Random;
 
 public class DragonCurveDriver {
-	public static int defIterations = 16;
+	public static int defIterations = 15;
 	
-	public static final int WIDTH  = 1000;
-	public static final int HEIGHT = 1000;
+	public static final int WIDTH  = 1800;
+	public static final int HEIGHT = 1800;
 	
-	public static final double SIZE = 5;
+	public static Random random;
 	
-	public static double startX = 3 * WIDTH / 4;
-	public static double startY = 3 * HEIGHT / 4;
+	public static double sizeX;
+	public static double sizeY;
+	public static double size;
+	
+	public static double startX;
+	public static double startY;
 	public static double lastX;
 	public static double lastY;
-	public static double newX = startX;
-	public static double newY = startY;
-
+	public static double newX;
+	public static double newY;
 	public static void main(String[] args) {
 		
 		DragonCurve curve;
@@ -27,18 +32,31 @@ public class DragonCurveDriver {
 		{
 			curve = new DragonCurve(defIterations);
 		}
+		random = new Random();
+		sizeX = WIDTH / curve.getXRange();
+		sizeY = HEIGHT / curve.getYRange();
+		size = Math.min(sizeX, sizeY);
+		startY = HEIGHT - (sizeY * curve.getMaxUps());
+		startX = WIDTH - (sizeX * curve.getMaxRights());
+		newY = startY;
+		newX = startX;
 		
 		StdDraw.setCanvasSize(WIDTH, HEIGHT);
 		StdDraw.setXscale(0, WIDTH);
 		StdDraw.setYscale(0, HEIGHT);
-		StdDraw.clear(StdDraw.WHITE);
-		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.setPenRadius(.002);
+		StdDraw.clear(StdDraw.BLACK);
+		StdDraw.setPenRadius(.005);
+		StdDraw.enableDoubleBuffering();
 		Iterator<Integer> c = curve.iterator();
+		StdDraw.setPenColor(StdDraw.WHITE);
 		while (c.hasNext())
 		{
+			//StdDraw.setPenColor(random.nextInt(256), random.nextInt(256), random.nextInt(256));
 			drawNext(c.next());
 		}
+		StdDraw.setFont(new Font("Times New Roman", Font.BOLD, 50));
+		StdDraw.setPenColor(StdDraw.RED);
+		StdDraw.text(200, HEIGHT - 100, "Iterations: " + curve.getIterations());
 		StdDraw.show();
 	}
 	
@@ -48,13 +66,13 @@ public class DragonCurveDriver {
 		lastY = newY;
 		switch (direction)
 		{
-			case 0: newX += SIZE;
+			case 0: newX += sizeX;
 					break;
-			case 1: newY += SIZE;
+			case 1: newY += sizeY;
 					break;
-			case 2: newX -= SIZE;
+			case 2: newX -= sizeX;
 					break;
-			default: newY -= SIZE;
+			default: newY -= sizeY;
 					 break;
 		}
 		StdDraw.line(lastX, lastY, newX, newY);
